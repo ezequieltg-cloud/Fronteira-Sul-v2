@@ -1,0 +1,523 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campanha SUL - Agibank</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f1335 0%, #1a1f4d 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .region {
+            font-size: 48px;
+            font-weight: 700;
+            color: #d4af37;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .date {
+            font-size: 14px;
+            color: #a0a5c8;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .coordination {
+            font-size: 14px;
+            color: #a0a5c8;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 68, 68, 0.15);
+            border: 1px solid #ff4444;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-size: 13px;
+            color: #ff4444;
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #d4af37;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #a0a5c8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.3;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 12px;
+            color: #a0a5c8;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #d4af37 0%, #f4cf5f 100%);
+            color: #1a1f4d;
+        }
+
+        .tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .update-info {
+            text-align: right;
+            font-size: 12px;
+            color: #a0a5c8;
+            margin-bottom: 15px;
+        }
+
+        .ranking-table {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 50px 2fr 1fr 1.2fr 1fr 1fr 80px;
+            padding: 15px;
+            background: rgba(212, 175, 55, 0.1);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            font-size: 11px;
+            font-weight: 600;
+            color: #d4af37;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 50px 2fr 1fr 1.2fr 1fr 1fr 80px;
+            padding: 18px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .table-row:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .position {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .store-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .store-time {
+            font-size: 11px;
+            color: #a0a5c8;
+            margin-top: 3px;
+        }
+
+        .value {
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .value.currency::before {
+            content: 'R$ ';
+            font-size: 11px;
+            color: #a0a5c8;
+        }
+
+        .points {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            padding: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #d4af37;
+            text-align: center;
+        }
+
+        .form-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #d4af37;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #d4af37;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4cf5f 100%);
+            border: none;
+            border-radius: 8px;
+            color: #1a1f4d;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .table-header, .table-row {
+                grid-template-columns: 40px 1.5fr 0.8fr 0.8fr 0.8fr 0.8fr 60px;
+                font-size: 10px;
+                padding: 12px 8px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .region {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="region">SUL</div>
+            <div class="date" id="currentDate"></div>
+            <div class="coordination">COORDENAÇÃO EZEQUIEL</div>
+            <div class="live-badge">
+                <span class="live-dot"></span>
+                AO VIVO
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="lojasLancadas">0</div>
+                <div class="stat-label">Lojas<br>Lançadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="aguardando">16</div>
+                <div class="stat-label">Aguardando</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="cpTotal">0</div>
+                <div class="stat-label">CP NN<br>Total</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="segurosTotal">0</div>
+                <div class="stat-label">Seguros<br>Total</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('placar')">
+                🏆 PLACAR
+            </button>
+            <button class="tab" onclick="switchTab('lancar')">
+                📊 LANÇAR
+            </button>
+        </div>
+
+        <div id="placar" class="content active">
+            <div class="update-info">
+                Atualizado às <span id="updateTime">--:--</span>
+            </div>
+            
+            <div class="ranking-table">
+                <div class="table-header">
+                    <div>#</div>
+                    <div>LOJA</div>
+                    <div>CP NN</div>
+                    <div>CONSULTORES</div>
+                    <div>SALDO REC.</div>
+                    <div>SEG. ONE</div>
+                    <div>PTS</div>
+                </div>
+                <div id="rankingBody"></div>
+            </div>
+        </div>
+
+        <div id="lancar" class="content">
+            <div class="form-container">
+                <form id="launchForm">
+                    <div class="form-group">
+                        <label>Selecione sua Loja</label>
+                        <select id="storeSelect" required>
+                            <option value="">Escolha...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>CP NN</label>
+                            <input type="number" id="cpnn" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Consultores Positivaram</label>
+                            <input type="number" id="consultores" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Saldo Recuperado</label>
+                            <input type="number" id="saldo" min="0" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Seguro One</label>
+                        <input type="number" id="seguro" min="0" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">LANÇAR NO PLACAR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const stores = [
+            'Rosário do Sul', 'Santo Ângelo', 'Ijuí', 'Santa Maria', 'Cruz Alta',
+            'Carazinho', 'Passo Fundo', 'Erechim', 'Caxias do Sul', 'Bento Gonçalves',
+            'Novo Hamburgo', 'São Leopoldo', 'Canoas', 'Gravataí', 'Porto Alegre Centro',
+            'Porto Alegre Zona Sul'
+        ];
+
+        let data = JSON.parse(localStorage.getItem('campaignData') || '{}');
+
+        // Inicializar select
+        const select = document.getElementById('storeSelect');
+        stores.forEach(store => {
+            const option = document.createElement('option');
+            option.value = store;
+            option.textContent = store;
+            select.appendChild(option);
+        });
+
+        // Data atual
+        function updateDate() {
+            const now = new Date();
+            const options = { day: '2-digit', month: 'long', year: 'numeric' };
+            const dateStr = now.toLocaleDateString('pt-BR', options).toUpperCase();
+            document.getElementById('currentDate').textContent = dateStr.replace(' DE ', ' DE ').replace(' DE ', ' DE ');
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tab).classList.add('active');
+        }
+
+        function calculatePoints(cpnn, consultores, saldo, seguro) {
+            return Math.round(
+                (cpnn * 10) + 
+                (consultores * 5) + 
+                (saldo / 100) + 
+                (seguro * 8)
+            );
+        }
+
+        function updateRanking() {
+            const rankings = Object.entries(data).map(([store, values]) => ({
+                store,
+                ...values,
+                points: calculatePoints(values.cpnn, values.consultores, values.saldo, values.seguro)
+            })).sort((a, b) => b.points - a.points);
+
+            const tbody = document.getElementById('rankingBody');
+            tbody.innerHTML = '';
+
+            const medals = ['🥇', '🥈', '🥉'];
+
+            rankings.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.className = 'table-row';
+                row.innerHTML = `
+                    <div class="position">${medals[index] || (index + 1)}</div>
+                    <div>
+                        <div class="store-name">${item.store}</div>
+                        <div class="store-time">⏱ ${item.time}</div>
+                    </div>
+                    <div class="value">${item.cpnn}</div>
+                    <div class="value">${item.consultores}</div>
+                    <div class="value currency">${item.saldo.toLocaleString('pt-BR')}</div>
+                    <div class="value">${item.seguro}</div>
+                    <div class="points">${item.points}</div>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Atualizar cards
+            document.getElementById('lojasLancadas').textContent = rankings.length;
+            document.getElementById('aguardando').textContent = stores.length - rankings.length;
+            document.getElementById('cpTotal').textContent = rankings.reduce((sum, r) => sum + r.cpnn, 0);
+            document.getElementById('segurosTotal').textContent = rankings.reduce((sum, r) => sum + r.seguro, 0);
+
+            // Hora atualização
+            const now = new Date();
+            document.getElementById('updateTime').textContent = 
+                now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        document.getElementById('launchForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const store = document.getElementById('storeSelect').value;
+            const cpnn = parseInt(document.getElementById('cpnn').value);
+            const consultores = parseInt(document.getElementById('consultores').value);
+            const saldo = parseFloat(document.getElementById('saldo').value);
+            const seguro = parseInt(document.getElementById('seguro').value);
+            
+            const now = new Date();
+            const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            
+            data[store] = { cpnn, consultores, saldo, seguro, time };
+            localStorage.setItem('campaignData', JSON.stringify(data));
+            
+            alert('✅ Dados lançados com sucesso!');
+            e.target.reset();
+            
+            switchTab('placar');
+            document.querySelectorAll('.tab')[0].classList.add('active');
+            document.querySelector('.tab:nth-child(2)').classList.remove('active');
+            
+            updateRanking();
+        });
+
+        updateDate();
+        updateRanking();
+        setInterval(updateRanking, 30000);
+    </script>
+</body>
+</html>
